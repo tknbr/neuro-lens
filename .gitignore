@@ -1,0 +1,8 @@
+# Ignore object files
+*.o
+
+# Ignore everything in the data directory
+data/*
+
+# Ignore everything in the bin directory
+bin/*
