@@ -32,6 +32,16 @@ typedef struct {
     pixel *pixels; ///< Pointer to the array of pixel data
 } Image;
 
+
+/**
+ * Enum to hold return values
+ */
+typedef enum {
+	RET_SUCCESS = 0,
+	RET_FAIL    = 1
+} ret_types;
+
+
 /**
  * Creates a new image with specified dimensions.
  *
@@ -65,7 +75,7 @@ void img_free(Image* img);
  * @param src A pointer to the pointer of the Image to be resized.
  * @param new_width The new width for the image.
  * @param new_height The new height for the image.
- * @return 0 on success, or 1 if an error occurs.
+ * @return RET_SUCCESS on success, or RET_FAIL if an error occurs.
  */
 int img_resize(Image** src, int new_width, int new_height);
 
@@ -80,7 +90,7 @@ int img_resize(Image** src, int new_width, int new_height);
  * @param y The Y coordinate of the top-left corner of the crop area.
  * @param width The width of the crop area.
  * @param height The height of the crop area.
- * @return 0 on success, or 1 if an error occurs.
+ * @return RET_SUCCESS on success, or RET_FAIL if an error occurs.
  */
 int img_crop(Image **src, int x, int y, int width, int height);
 
@@ -107,5 +117,39 @@ Image* img_load(const char *filename);
  * @param img The Image to be saved.
  */
 void img_write(const char *filename, Image *img);
+
+/**
+ * Flips an image horizontally in place.
+ *
+ * This function mirrors the image along its vertical axis, effectively reversing
+ * the order of pixels in each row. The transformation is performed directly on the
+ * input image data, modifying the original image.
+ *
+ * @param img A pointer to an Image structure representing the image to be flipped.
+ *            The Image structure must be valid and contain allocated pixel data.
+ *            If the Image pointer is NULL or contains no pixel data, the function
+ *            will exit without performing any operations.
+ */
+void img_flip_horizontal(Image* img);
+
+/**
+ * Rotates an image by a given angle around its center.
+ *
+ * This function rotates an image clockwise by the specified angle in degrees, with the rotation
+ * centered around the geometric center of the image. The rotated image replaces the original
+ * image data. For simplicity, this implementation does not perform interpolation, which means
+ * the quality of the rotated image may decrease, especially for angles that are not multiples
+ * of 90 degrees.
+ *
+ * @param img A pointer to an Image structure representing the image to be rotated. The image
+ *           must be valid and contain allocated pixel data.
+ * @param angle The angle in degrees by which to rotate the image clockwise. The function uses
+ *             an approximation of sine and cosine functions (`sin_approx` and `cos_approx`)
+ *             to calculate the rotation, which may affect precision for large angles or require
+ *             adjustment for negative angles.
+ *
+ * @return RET_SUCCESS on success, or RET_FAIL if an error occurs.
+ */
+int img_rotate(Image* img, float angle);
 
 #endif // IMG_UTILS_H

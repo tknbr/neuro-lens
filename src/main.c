@@ -1,4 +1,4 @@
-
+    
 /**
 neuro-lens/
 ├── src/
@@ -46,7 +46,8 @@ neuro-lens/
 #define IMG_COPY_PATH "/home/tknbr/Documents/projectes/neuro-lens/data/resized.png"
 
 
-int main() {
+int main()
+{
     printf("Hello, ML World!\n");
 
     Image *image = img_load(IMG_PATH);
@@ -70,6 +71,8 @@ int main() {
         img_free(image); // Ensure resources are freed on failure
         return 1;
     }
+    img_rotate(image, 45);
+    img_flip_horizontal(image);
 
     img_write(IMG_COPY_PATH, image);
 
